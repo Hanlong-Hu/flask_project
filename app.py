@@ -23,7 +23,11 @@ def post():
     if request.method == 'POST':
         content = request.form['content']
         print(content)
-        word_count = count_words(content)
+        options = {
+            'case_sensitive': request.form.get('case_sensitive', 'off') == 'on',
+            'remove_stop_words': request.form.get('remove_stop_words', 'off') == 'on'
+        }
+        word_count = count_words(content, **options)
         return render_template('post.html', name = name, title = name, content = content, word_count = word_count)
         
         # return redirect(url_for('post'))

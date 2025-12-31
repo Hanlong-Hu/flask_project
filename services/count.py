@@ -1,6 +1,8 @@
 import re
 from collections import Counter
 
+# functional programming 
+
 def clean_text(text, case_sensistive=False, remove_stop_words=False):
     if not case_sensistive:
         text = text.lower()
@@ -14,10 +16,16 @@ def clean_text(text, case_sensistive=False, remove_stop_words=False):
         words = [word for word in words if word not in stop_words]
     return words
 
-# Maintains Captials
-def clean_text_A(text):
-    text = re.sub(r'[^a-zA-Z]', "", text)
-    return text
+def lowercase_step(words) : return [w.lower() for w in words]
+
+def filter_alpha(words) : return re.sub(r"[^a-zA-Z' ]", '', words)
+
+def filter_alphaNumeric(words) : return re.sub(r"[^a-zA-Z0-9' ]", "", words)
+
+def remove_stop_words(words) : 
+    stop_words = {"the", "is", "at", "which", "on"} # example stop words, import from nltk if needed
+    words_filtered = [word for word in words if word not in stop_words]
+    return words_filtered
 
 def count_words(text):
     text = clean_text(text)

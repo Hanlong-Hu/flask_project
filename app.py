@@ -84,13 +84,17 @@ def post():
         char_count = get_character_count(content)
         char_count_no_spaces = get_character_count_no_spaces(content)
         
-        # Prepare frequency data for comparison (Top 50 for performance and readability)
-        from services.metrics import get_most_frequent_words
+        # Prepare frequency data for comparison
+        from services.metrics import get_most_frequent_words, get_zipf_data
         chart_data = {
             'before': get_most_frequent_words(snapshots.get('before_stop_words', []), n=50),
             'after': get_most_frequent_words(snapshots.get('final', []), n=50)
         }
         
+        zipf_data = {
+            'before': get_zipf_data(snapshots.get('before_stop_words', [])),
+            'after': get_zipf_data(snapshots.get('final', []))
+        }
         
         return render_template('post.html', 
                                name=name, 
@@ -101,7 +105,8 @@ def post():
                                unique_word_count=unique_word_count,
                                char_count=char_count,
                                char_count_no_spaces=char_count_no_spaces,
-                               chart_data=chart_data)
+                               chart_data=chart_data,
+                               zipf_data=zipf_data)
         
         # return redirect(url_for('post'))
 

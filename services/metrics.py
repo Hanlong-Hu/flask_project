@@ -17,6 +17,32 @@ def get_most_frequent_words(words, n=None):
         "values": [count for word, count in counts]
     }
 
+def get_zipf_data(words):
+    """
+    Returns data for Zipf's Law plot (Rank vs Frequency).
+    Includes theoretical Zipf values for comparison.
+    """
+    if not words:
+        return {"ranks": [], "frequencies": [], "labels": [], "theoretical": []}
+    
+    counts = Counter(words).most_common()
+    
+    # Extract frequencies and words
+    frequencies = [count for word, count in counts]
+    labels = [word for word, count in counts]
+    ranks = list(range(1, len(frequencies) + 1))
+    
+    # Theoretical Zipf: f = C / r^s, here s=1 and C = max frequency
+    max_freq = frequencies[0]
+    theoretical = [max_freq / r for r in ranks]
+    
+    return {
+        "ranks": ranks,
+        "frequencies": frequencies,
+        "labels": labels,
+        "theoretical": theoretical
+    }
+
 def get_character_count(text):
     """Returns total number of characters in raw text."""
     return len(text)

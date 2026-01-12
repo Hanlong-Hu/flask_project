@@ -8,11 +8,14 @@ This project allows users to input blocks of text and receive immediate feedback
 ### Goals
 - [x] Basic text input interface and word count.
 - [x] Apostrophe preservation in normalization.
-- [ ] Implement a modular **Pipeline Pattern** for text processing.
-- [ ] Add user toggles for **Case Sensitivity** and **Stop Words**.
+- [x] Implement a modular **Pipeline Pattern** for text processing.
+- [x] Add user toggles for **Case Sensitivity** and **Stop Words**.
 - [ ] Display advanced metrics: Unique words and Most Frequent words.
 - [ ] Dictionary check for "Words not in dictionary" (Future goal).
-
+- [ ] Type token ratio [site with example zipf's plotted distirbution](https://medium.com/@rajeswaridepala/empirical-laws-ttr-cc9f826d304d)
+- [ ] use zipf as a option to generate stop words
+- [ ] show a zipf graph
+- [ ] show number of characters
 ## Technical Implementation Steps
 To achieve the remaining goals, the following steps will be taken:
 1. **Refactor Processing**: Transition from static functions to a `TextPipeline` class or higher-order function.

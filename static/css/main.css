@@ -248,3 +248,87 @@ input[type="text"] {
   color: #546e7a;
 }
 
+/* Visualization Styling */
+.visualization-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+}
+
+.viz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.viz-header h3 {
+  color: #2c3e50;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.chart-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.toggle-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+/* Tiny switch variation */
+.switch.tiny {
+  width: 36px;
+  height: 20px;
+}
+
+.switch.tiny .slider:before {
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+}
+
+.switch.tiny input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.chart-wrapper {
+  height: 400px; /* Slightly taller for better label clearance */
+  position: relative;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: hidden;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 1rem;
+}
+
+/* Custom scrollbar for better visibility */
+.chart-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.chart-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.chart-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+.chart-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+#tokenChart {
+  min-width: 50%; /* Ensure it takes at least full width */
+}

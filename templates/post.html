@@ -85,18 +85,40 @@
               <canvas id="tokenChart"></canvas>
           </div>
       </div>
+
+      <div class="visualization-container" style="margin-top: 2rem;">
+          <div class="viz-header">
+              <div style="display: flex; flex-direction: column;">
+                <h3 style="margin-bottom: 0.25rem;">Zipf Distribution (Log-Log)</h3>
+                <span style="font-size: 0.85rem; color: #666;">Rank vs Frequency Analysis</span>
+              </div>
+          </div>
+          <div class="chart-wrapper" style="overflow: hidden; height: 500px;">
+              <canvas id="zipfChart"></canvas>
+          </div>
+          <div class="explanation-box" style="margin-top: 1.5rem; padding: 1rem; background: #fdfdfd; border-left: 4px solid #3498db; border-radius: 4px;">
+              <p style="margin-bottom: 0.5rem; font-weight: bold; color: #2c3e50;">Natural language follows Zipf’s Law</p>
+              <ul style="margin-left: 1.5rem; font-size: 0.95rem; color: #444;">
+                  <li><strong>Global Structure:</strong> A straight line in log–log space indicates power-law behavior.</li>
+                  <li><strong>Linguistic Insight:</strong> This chart reveals how a few words dominate while most occur rarely.</li>
+                  <li><strong>Analysis:</strong> Deviations at the <em>Head</em> (very common words) or <em>Tail</em> (rare words) can reveal genre, text size, or preprocessing effects.</li>
+              </ul>
+          </div>
+      </div>
   </div>
 
   <script>
       const rawChartData = {{ chart_data | tojson | safe }};
-      const ctx = document.getElementById('tokenChart').getContext('2d');
+      const rawZipfData = {{ zipf_data | tojson | safe }};
       
+      // Token Frequency Chart
+      const ctx = document.getElementById('tokenChart').getContext('2d');
       const chartCanvas = document.getElementById('tokenChart');
       
       let currentData = rawChartData.after;
+      let currentZipf = rawZipfData.after;
 
       function updateChartWidth(data) {
-          // Adjust width: roughly 50px per bar, but at least 100% of container
           const minBarWidth = 50;
           const calculatedWidth = data.labels.length * minBarWidth;
           chartCanvas.parentElement.style.width = '100%'; 
@@ -134,17 +156,84 @@
           }
       });
 
-      function refreshChart(newData) {
+      // Zipf Chart
+      const zipfCtx = document.getElementById('zipfChart').getContext('2d');
+      const zipfChart = new Chart(zipfCtx, {
+          type: 'line',
+          data: {
+              labels: currentZipf.ranks,
+              datasets: [
+                  {
+                      label: 'Empirical Frequency',
+                      data: currentZipf.frequencies,
+                      borderColor: 'rgba(52, 152, 219, 1)',
+                      backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                      borderWidth: 2,
+                      pointRadius: 3,
+                      pointHoverRadius: 6,
+                      showLine: true,
+                      fill: false,
+                  },
+                  {
+                      label: 'Theoretical Zipf (1/r)',
+                      data: currentZipf.theoretical,
+                      borderColor: 'rgba(231, 76, 60, 0.8)',
+                      borderDash: [5, 5],
+                      borderWidth: 1,
+                      pointRadius: 0,
+                      fill: false,
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  tooltip: {
+                      callbacks: {
+                          label: function(context) {
+                              const rank = context.label;
+                              const freq = context.raw;
+                              const word = currentZipf.labels[context.dataIndex];
+                              return `Rank ${rank} (${word}): ${freq}`;
+                          }
+                      }
+                  }
+              },
+              scales: {
+                  x: {
+                      type: 'logarithmic',
+                      title: { display: true, text: 'Rank (Log Scale)' },
+                      min: 1
+                  },
+                  y: {
+                      type: 'logarithmic',
+                      title: { display: true, text: 'Frequency (Log Scale)' }
+                  }
+              }
+          }
+      });
+
+      function refreshCharts(newData, newZipf) {
+          // Update Token Chart
           updateChartWidth(newData);
           tokenChart.data.labels = newData.labels;
           tokenChart.data.datasets[0].data = newData.values;
           tokenChart.update();
+
+          // Update Zipf Chart
+          currentZipf = newZipf; // Update local reference for tooltips
+          zipfChart.data.labels = newZipf.ranks;
+          zipfChart.data.datasets[0].data = newZipf.frequencies;
+          zipfChart.data.datasets[1].data = newZipf.theoretical;
+          zipfChart.update();
       }
 
       document.getElementById('chartDataToggle').addEventListener('change', function(e) {
           const isAfter = e.target.checked;
           const newData = isAfter ? rawChartData.after : rawChartData.before;
-          refreshChart(newData);
+          const newZipf = isAfter ? rawZipfData.after : rawZipfData.before;
+          refreshCharts(newData, newZipf);
       });
 
       // Initial call

@@ -1,9 +1,9 @@
-# Text Analyzer
+# Visual Tokenizer
 
-A Flask-based web application designed to provide detailed text analysis and metrics.
+A Flask-based web application designed to provide detailed text analysis and metrics through tokenization and filtering.
 
 ## Description
-This project allows users to input blocks of text and receive immediate feedback on word counts, character counts, and frequency analysis. It features a flexible text-processing pipeline to handle normalization, case sensitivity, and stop-word filtering.
+This project allows users to input blocks of text and receive visual feedback on word counts, character counts, and frequency analysis. It features a flexible text-processing pipeline to handle tokenizatin, normalization, case sensitivity, and stop-word filtering.
 
 ## Technical Implementation
 The application is built with a modular architecture:
@@ -50,7 +50,7 @@ The application is built with a modular architecture:
 ## Optional:
    Local txt files will appear as a dropdown option under data/corpora for backend processing if html request sizes become too large
 ## Acknowledgments
-* NLTK for robust natural language processing.
+* NLTK for natural language processing.
 * Chart.js for data visualization.
 * MathJax for LaTeX rendering.
 
